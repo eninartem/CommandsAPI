@@ -16,7 +16,7 @@ builder.Services.AddDbContext<CommandContext>(
     o => o.UseNpgsql(connectionStringBuilder.ConnectionString));
 
 builder.Services.AddControllers();
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICommandAPIRepo, SqlCommandAPIRepo>();
 
 var app = builder.Build();
