@@ -2,10 +2,18 @@ using CommandAPI.Data;
 
 using Microsoft.EntityFrameworkCore;
 
+using Npgsql;
+
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionStringBuilder = new NpgsqlConnectionStringBuilder();
+connectionStringBuilder.ConnectionString =
+    builder.Configuration.GetConnectionString("PostreSqlConnection");
+connectionStringBuilder.Username = builder.Configuration["UserID"];
+connectionStringBuilder.Password = builder.Configuration["Password"];
+
 builder.Services.AddDbContext<CommandContext>(
-    o => o.UseNpgsql(builder.Configuration.GetConnectionString("PostreSqlConnection")));
+    o => o.UseNpgsql(connectionStringBuilder.ConnectionString));
 
 builder.Services.AddControllers();
 
