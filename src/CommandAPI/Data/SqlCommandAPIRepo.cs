@@ -6,14 +6,15 @@ public class SqlCommandAPIRepo : ICommandAPIRepo
 {
     private readonly CommandContext _context;
 
-    public SqlCommandAPIRepo(CommandContext context)
-    {
-        _context = context;
-    }
+    public SqlCommandAPIRepo(CommandContext context) => _context = context;
+
+    public bool SaveChanges() => _context.SaveChanges() >= 0;
 
     public void CreateCommand(Command command)
     {
-        throw new NotImplementedException();
+        if (command == null) throw new ArgumentNullException(nameof(command));
+
+        _context.Commands.Add(command);
     }
 
     public void DeleteCommand(Command command)
@@ -29,11 +30,6 @@ public class SqlCommandAPIRepo : ICommandAPIRepo
     public Command GetCommandById(int id)
     {
         return _context.Commands.FirstOrDefault(p => p.Id == id);
-    }
-
-    public bool SaveChanges()
-    {
-        throw new NotImplementedException();
     }
 
     public void UpdateCommand(Command command)
